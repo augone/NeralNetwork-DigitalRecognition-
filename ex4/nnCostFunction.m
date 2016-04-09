@@ -68,28 +68,35 @@ J = J/m;
 %               over the training examples if you are implementing it for the 
 %               first time.
 %
-delta = Theta
+G1 = zeros(size(Theta1));
+G2 = zeros(size(Theta2));
+
+
 for iterator = 1 : m
    %step 1
-   a11 = X(iterator,:);
-   a11 = [1 a11];
-   z22 = a11 * Theta1';
+   a11 = [1;X(iterator,:)'];
+   
+   z22 = Theta1*a11;
    a22 = sigmoid(z22);
-   a22 = [1 a22];
-   z33 = a22 * Theta2';
+   a22 = [1;a22];
+   z33 = Theta2*a22;
    a33 = sigmoid(z33);
    %step 2
-   tempy = zeros(1,10);
+   tempy = zeros(1,num_labels);
    tempy(y(iterator)) = 1;
-   delta3 = a33 - tempy;
+   delta3 = a33 - tempy';
    %step3
-   delta2 = Theta2'*delta3' .* sigmoidGradient(z22);
+   temp = (Theta2'*delta3);
+   delta2 = temp(2:end,1).* sigmoidGradient(z22);
    %step4
-   delta = 
+   G1 = G1 + delta2 * a11';
+   G2 = G2 + delta3 * a22';
    
-    
-    
+   
 end
+Theta1_grad = 1/m*G1;
+Theta2_grad = 1/m*G2;
+
 % Part 3: Implement regularization with the cost function and gradients.
 %
 %         Hint: You can implement this around the code for
