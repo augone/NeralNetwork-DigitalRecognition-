@@ -94,8 +94,14 @@ for iterator = 1 : m
    
    
 end
+
 Theta1_grad = 1/m*G1;
+regularizationTerm_t1 = lambda/m*[zeros(size(Theta1,1),1) Theta1(:,2:end)];
+Theta1_grad = Theta1_grad + regularizationTerm_t1;
+
 Theta2_grad = 1/m*G2;
+regularizationTerm_t2 = lambda/m*[zeros(size(Theta2,1),1) Theta2(:,2:end)];
+Theta2_grad = Theta2_grad + regularizationTerm_t2;
 
 % Part 3: Implement regularization with the cost function and gradients.
 %
